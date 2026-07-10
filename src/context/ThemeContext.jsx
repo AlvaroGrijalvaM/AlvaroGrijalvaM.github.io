@@ -6,9 +6,14 @@ export function ThemeProvider({children}){
   const [theme, setTheme]=useState(() => {
     // Check localStorage first
     const saved=localStorage.getItem('portfolio-theme');
-    if (saved==='light' || saved==='dark') return saved;
+    if (saved==='light' || saved==='dark') {
+      document.documentElement.setAttribute('data-theme', saved);
+      return saved;
+    }
     // Then check system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const preferred=window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', preferred);
+    return preferred;
   });
 
   useEffect(() => {
